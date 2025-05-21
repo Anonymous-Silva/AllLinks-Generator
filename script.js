@@ -1,77 +1,80 @@
 
-function updatePreview() {
-    document.getElementById("previewName").innerText = document.getElementById("nameInput").value || "O teu nome";
-    document.getElementById("previewDesc").innerText = document.getElementById("descInput").value || "Descrição aqui";
-    const imgUrl = document.getElementById("imgInput").value;
-    document.getElementById("previewImg").src = imgUrl || "";
+function adicionarLink() {
+  const div = document.createElement("div");
+  div.classList.add("link-item");
 
-    const previewLinks = document.getElementById("previewLinks");
-    previewLinks.innerHTML = "";
+  const texto = document.createElement("input");
+  texto.placeholder = "Texto do link";
+  texto.className = "link-text";
 
-    const titles = document.querySelectorAll(".linkTitle");
-    const urls = document.querySelectorAll(".linkURL");
+  const url = document.createElement("input");
+  url.placeholder = "URL do link";
+  url.className = "link-url";
 
-    for (let i = 0; i < titles.length; i++) {
-        const title = titles[i].value;
-        const url = urls[i].value;
-        if (title && url) {
-            const link = document.createElement("a");
-            link.href = url;
-            link.className = "link-button";
-            link.target = "_blank";
-            link.innerText = title;
-            previewLinks.appendChild(link);
-        }
+  div.appendChild(texto);
+  div.appendChild(url);
+  document.getElementById("links").appendChild(div);
+}
+
+function atualizarPreview() {
+  const nome = document.getElementById("nome").value;
+  const imagem = document.getElementById("imagem").value;
+
+  let html = `
+    <div style="text-align:center;font-family:sans-serif;">
+      <img src="${imagem}" alt="Imagem" style="width:120px;border-radius:50%;margin-top:20px;">
+      <h2>${nome}</h2>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+  `;
+
+  const textos = document.querySelectorAll(".link-text");
+  const urls = document.querySelectorAll(".link-url");
+
+  for (let i = 0; i < textos.length; i++) {
+    const t = textos[i].value;
+    const u = urls[i].value;
+    if (t && u) {
+      html += `<a href="${u}" target="_blank" style="padding:10px;background:#007bff;color:white;border-radius:5px;text-decoration:none;">${t}</a>`;
     }
+  }
+
+  html += `</div></div>`;
+
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  document.getElementById("preview").src = url;
 }
 
-function addLink() {
-    const container = document.getElementById("linksContainer");
-    const div = document.createElement("div");
-    div.className = "link-entry";
-    div.innerHTML = \`
-        <input type="text" class="linkTitle" placeholder="Título do link">
-        <input type="text" class="linkURL" placeholder="https://...">
-    \`;
-    container.appendChild(div);
-    bindInputs();
+function exportarHTML() {
+  const preview = document.getElementById("preview");
+  preview.contentWindow.postMessage("exportar", "*");
+
+  const nome = document.getElementById("nome").value || "minha-linktree";
+  const imagem = document.getElementById("imagem").value;
+
+  let html = `
+    <!DOCTYPE html><html lang="pt"><head><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${nome}</title></head><body style="text-align:center;font-family:sans-serif;">
+    <img src="${imagem}" alt="Imagem" style="width:120px;border-radius:50%;margin-top:20px;">
+    <h2>${nome}</h2><div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">`;
+
+  const textos = document.querySelectorAll(".link-text");
+  const urls = document.querySelectorAll(".link-url");
+
+  for (let i = 0; i < textos.length; i++) {
+    const t = textos[i].value;
+    const u = urls[i].value;
+    if (t && u) {
+      html += `<a href="${u}" target="_blank" style="padding:10px;background:#007bff;color:white;border-radius:5px;text-decoration:none;">${t}</a>`;
+    }
+  }
+
+  html += `</div></body></html>`;
+
+  const blob = new Blob([html], { type: "text/html" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `${nome.replace(/\s+/g, "_")}.html`;
+  link.click();
 }
-
-function bindInputs() {
-    document.querySelectorAll("input").forEach(input => {
-        input.removeEventListener("input", updatePreview);
-        input.addEventListener("input", updatePreview);
-    });
-}
-
-function generateHTML() {
-    const htmlContent = document.querySelector(".preview-box").outerHTML;
-    const fullHTML = \`
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>O meu Linktree</title>
-    <style>
-        body { font-family: Arial; text-align: center; padding: 20px; background: #f3f3f3; }
-        img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
-        .link-button { display: block; margin: 10px auto; padding: 10px; width: 80%; background: #333; color: white; text-decoration: none; border-radius: 5px; }
-    </style>
-</head>
-<body>
-\${htmlContent}
-</body>
-</html>
-\`;
-
-    const blob = new Blob([fullHTML], {type: "text/html"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "linktree.html";
-    a.click();
-}
-
-window.onload = () => {
-    bindInputs();
-    updatePreview();
-};
