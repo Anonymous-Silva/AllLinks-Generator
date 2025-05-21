@@ -1,46 +1,37 @@
 
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Linktree Pessoal</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador Linktree</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="editor">
-            <h2>Personaliza o teu Linktree</h2>
-            <label>Nome:</label>
-            <input type="text" id="nameInput" placeholder="O teu nome">
+  <div class="container">
+    <h1>Gerador de Linktree</h1>
 
-            <label>Descrição:</label>
-            <input type="text" id="descInput" placeholder="Escreve uma descrição">
+    <label>Nome:</label>
+    <input type="text" id="nome" placeholder="O teu nome">
 
-            <label>Imagem de perfil (URL):</label>
-            <input type="text" id="imgInput" placeholder="https://...">
+    <label>URL da imagem:</label>
+    <input type="text" id="imagem" placeholder="https://...">
 
-            <div id="linksContainer">
-                <h3>Links</h3>
-                <div class="link-entry">
-                    <input type="text" class="linkTitle" placeholder="Título do link">
-                    <input type="text" class="linkURL" placeholder="https://...">
-                </div>
-            </div>
-            <button onclick="addLink()">+ Adicionar Link</button>
-            <button onclick="generateHTML()">💾 Exportar HTML</button>
-        </div>
-
-        <div class="preview">
-            <h2>Pré-visualização</h2>
-            <div class="preview-box" id="previewBox">
-                <img id="previewImg" src="" alt="Imagem de perfil">
-                <h1 id="previewName">O teu nome</h1>
-                <p id="previewDesc">Descrição aqui</p>
-                <div id="previewLinks"></div>
-            </div>
-        </div>
+    <div id="links">
+      <div class="link-item">
+        <input type="text" placeholder="Texto do link" class="link-text">
+        <input type="text" placeholder="URL do link" class="link-url">
+      </div>
     </div>
-    <script src="script.js"></script>
+
+    <button onclick="adicionarLink()">+ Adicionar Link</button>
+    <button onclick="atualizarPreview()">🔄 Atualizar Pré-visualização</button>
+    <button onclick="exportarHTML()">⬇️ Exportar HTML</button>
+
+    <h2>Pré-visualização:</h2>
+    <iframe id="preview" class="preview-frame"></iframe>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
