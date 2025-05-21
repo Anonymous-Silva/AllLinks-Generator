@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Linktree Pessoal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="editor">
+            <h2>Personaliza o teu Linktree</h2>
+            <label>Nome:</label>
+            <input type="text" id="nameInput" placeholder="O teu nome">
+
+            <label>Descrição:</label>
+            <input type="text" id="descInput" placeholder="Escreve uma descrição">
+
+            <label>Imagem de perfil (URL):</label>
+            <input type="text" id="imgInput" placeholder="https://...">
+
+            <div id="linksContainer">
+                <h3>Links</h3>
+                <div class="link-entry">
+                    <input type="text" class="linkTitle" placeholder="Título do link">
+                    <input type="text" class="linkURL" placeholder="https://...">
+                </div>
+            </div>
+            <button onclick="addLink()">+ Adicionar Link</button>
+            <button onclick="generateHTML()">💾 Exportar HTML</button>
+        </div>
+
+        <div class="preview">
+            <h2>Pré-visualização</h2>
+            <div class="preview-box" id="previewBox">
+                <img id="previewImg" src="" alt="Imagem de perfil">
+                <h1 id="previewName">O teu nome</h1>
+                <p id="previewDesc">Descrição aqui</p>
+                <div id="previewLinks"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
